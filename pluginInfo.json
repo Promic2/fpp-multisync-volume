@@ -6,6 +6,7 @@
 	"homeURL": "https://github.com/Promic2/fpp-multisync-volume",
 	"srcURL": "https://github.com/Promic2/fpp-multisync-volume.git",
 	"bugURL": "https://github.com/Promic2/fpp-multisync-volume/issues",
+	"iconURL": "https://raw.githubusercontent.com/Promic2/fpp-multisync-volume/main/icon.png",
 	"allowUpdates": 1,
 	"releaseNotesStyle": "gitHistory",
 	"privacy": {
