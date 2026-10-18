@@ -15,7 +15,7 @@ status page changes nothing you can hear, and "Volume Set" commands in the
 master's playlists only reach the master.
 
 With this plugin enabled, the master's volume is sent to the remotes whenever
-it changes — from the volume slider, a playlist "Volume Set" entry, a command
+it changes, from the volume slider, a playlist "Volume Set" entry, a command
 preset, or anything else.
 
 ## Features
@@ -24,7 +24,7 @@ preset, or anything else.
 - **All remotes** (found automatically through MultiSync) or **selected
   remotes only**.
 - **Per-remote offset**, e.g. `-10` for a remote with louder speakers
-  (the result is clamped to 0–100).
+  (the result is clamped to 0 to 100).
 - Re-sends the volume every minute, so a remote that rebooted gets back in
   step on its own.
 - The master's own volume is never changed: each remote gets its own
@@ -38,7 +38,7 @@ preset, or anything else.
 3. Tick **Enable** and choose **All remotes** or **Selected remotes only**.
 4. Optionally set an offset per remote and press **Save remotes**.
 
-The remotes need nothing installed — they only have to be in Remote mode and
+The remotes need nothing installed. They only have to be in Remote mode and
 receive MultiSync from the master.
 
 Volume changes are forwarded within a fraction of a second. Changes on the
@@ -65,4 +65,4 @@ Tested on FPP 10.2 (master in a Debian VM, remote on a Raspberry Pi 4).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE).
