@@ -26,6 +26,19 @@ $pluginName = 'fpp-multisync-volume';
             array('All remotes' => 'all', 'Selected remotes only' => 'selected'), $pluginName); ?>
       </div>
     </div>
+    <div class="row mb-3 align-items-center">
+      <div class="col-sm-4 col-lg-3 fw-semibold">Re-send interval</div>
+      <div class="col-sm-8 col-lg-9">
+        <?php PrintSettingSelect('Re-send interval', 'ResendSeconds', 0, 0, '60',
+            array('Off' => '0', 'Every 10 seconds' => '10', 'Every 30 seconds' => '30',
+                  'Every minute' => '60', 'Every 5 minutes' => '300'), $pluginName); ?>
+        <div class="form-text">
+          Volume changes are always sent right away. On top of that, the current
+          volume is sent again at this interval even when nothing changed, so a
+          remote that restarted (and came back at its default volume) is corrected.
+        </div>
+      </div>
+    </div>
   </div>
 
   <h3 class="mt-4">Remotes</h3>

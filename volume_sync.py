@@ -24,7 +24,7 @@ REPO = "fpp-multisync-volume"
 API = "http://127.0.0.1/api"
 POLL_S = 0.25          # how often the master volume is read
 REFRESH_S = 5.0        # how often settings and the remote list are re-read
-REASSERT_S = 60.0      # re-send even without a change (remote rebooted, ...)
+DEFAULT_RESEND_S = 60  # re-send even without a change (remote rebooted, ...); 0 = off
 
 logdir = os.environ.get("LOGDIR", "/home/fpp/media/logs")
 logging.basicConfig(
@@ -104,6 +104,7 @@ def main():
     enabled = False
     targets = {}            # ip -> offset
     sent = {}               # ip -> last volume sent
+    resend_s = DEFAULT_RESEND_S
     last_refresh = 0.0
     last_reassert = 0.0
 
@@ -118,6 +119,13 @@ def main():
                     log.info("enabled" if enabled else "disabled")
                     sent.clear()
                 if enabled:
+                    try:
+                        new_resend = max(0, int(get_setting("ResendSeconds", str(DEFAULT_RESEND_S))))
+                    except ValueError:
+                        new_resend = DEFAULT_RESEND_S
+                    if new_resend != resend_s:
+                        log.info("re-send interval: %s", f"{new_resend} s" if new_resend else "off")
+                        resend_s = new_resend
                     offsets = parse_remote_config(get_setting("Remotes", ""))
                     if get_setting("TargetMode", "all") == "selected":
                         ips = [ip.strip() for ip in get_setting("Selected", "").split(",") if ip.strip()]
@@ -131,7 +139,7 @@ def main():
 
             if enabled and targets:
                 master = int(http_get("/fppd/volume?simple=true").strip())
-                reassert = now - last_reassert >= REASSERT_S
+                reassert = resend_s > 0 and now - last_reassert >= resend_s
                 if reassert:
                     last_reassert = now
                 for ip, offset in targets.items():

@@ -25,8 +25,10 @@ preset, or anything else.
   remotes only**.
 - **Per-remote offset**, e.g. `-10` for a remote with louder speakers
   (the result is clamped to 0 to 100).
-- Re-sends the volume every minute, so a remote that rebooted gets back in
-  step on its own.
+- Volume changes are sent right away. As a safety net the current volume is
+  also sent again at a set interval (off, 10 s, 30 s, 1 min or 5 min; default
+  1 min), so a remote that restarted at its default volume is corrected on
+  its own.
 - The master's own volume is never changed: each remote gets its own
   MultiSync "Volume Set" command addressed only to it.
 - Off after install until you enable it.

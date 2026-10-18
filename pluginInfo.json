@@ -8,7 +8,7 @@
 	"bugURL": "https://github.com/Promic2/fpp-multisync-volume/issues",
 	"iconURL": "https://raw.githubusercontent.com/Promic2/fpp-multisync-volume/main/icon.png",
 	"allowUpdates": 1,
-	"releaseNotesStyle": "gitHistory",
+	"releaseNotesStyle": "gitRelease",
 	"privacy": {
 		"summary": "When you turn it on, sends the master's volume level to the FPP remotes on your network. Nothing leaves your network.",
 		"sends": [
