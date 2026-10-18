@@ -1,0 +1,41 @@
+{
+	"repoName": "fpp-multisync-volume",
+	"name": "MultiSync Volume",
+	"author": "Promic2",
+	"description": "Mirrors the FPP master's volume to its MultiSync remotes, so the master's volume slider (and Volume Set in playlists and presets) controls the audio that plays on the remotes. Optional per-remote offset and a choice of all or selected remotes. Off until enabled; only talks to the FPP remotes on your own network.",
+	"homeURL": "https://github.com/Promic2/fpp-multisync-volume",
+	"srcURL": "https://github.com/Promic2/fpp-multisync-volume.git",
+	"bugURL": "https://github.com/Promic2/fpp-multisync-volume/issues",
+	"allowUpdates": 1,
+	"releaseNotesStyle": "gitHistory",
+	"privacy": {
+		"summary": "When you turn it on, sends the master's volume level to the FPP remotes on your network. Nothing leaves your network.",
+		"sends": [
+			{
+				"to": "the FPP remotes on your network",
+				"what": "volume level",
+				"why": "keep the remotes' audio volume in step with the master",
+				"alwaysOn": false
+			}
+		],
+		"collects": [],
+		"sensors": [],
+		"remoteAccess": "none",
+		"systemChanges": [],
+		"closedCode": false,
+		"other": "none"
+	},
+	"versions": [
+		{
+			"minFPPVersion": "9.0",
+			"maxFPPVersion": "0",
+			"branch": "main",
+			"sha": ""
+		}
+	],
+	"dependencies": {
+		"packages": [
+			"python3"
+		]
+	}
+}
