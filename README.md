@@ -1,3 +1,5 @@
+<img src="icon.png" alt="" width="96" align="right">
+
 # MultiSync Volume (fpp-multisync-volume)
 
 An [FPP (Falcon Player)](https://github.com/FalconChristmas/fpp) plugin that
