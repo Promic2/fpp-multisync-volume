@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # fpp-multisync-volume install script. Safe to run more than once.
 # Starts the daemon right away so no fppd restart is needed; it stays idle
 # until "Enable" is switched on in Content Setup -> MultiSync Volume.

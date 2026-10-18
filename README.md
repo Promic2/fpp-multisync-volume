@@ -63,7 +63,7 @@ and only while enabled. No internet access, no data collected.
 
 ## Compatibility
 
-Tested on FPP 10.2 (master in a Debian VM, remote on a Raspberry Pi 4).
+Requires FPP 10.0 or newer. Tested on FPP 10.2 (master in a Debian VM, remote on a Raspberry Pi 4).
 
 ## License
 
