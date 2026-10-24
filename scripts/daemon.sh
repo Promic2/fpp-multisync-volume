@@ -7,7 +7,6 @@
 
 REPO=fpp-multisync-volume
 : "${CFGDIR:=${MEDIADIR}/config}"
-: "${SETTINGSFILE:=${MEDIADIR}/settings}"
 PLUGIN_DIR="${MEDIADIR}/plugins/${REPO}"
 DATA_DIR="${MEDIADIR}/plugindata/${REPO}"
 PIDFILE="${DATA_DIR}/daemon.pid"
@@ -25,7 +24,7 @@ case "$1" in
 		touch "$PLUGIN_LOG"
 		chown fpp:fpp "$PLUGIN_LOG" 2>/dev/null
 		# The pid file gets the python process itself (exec), not a wrapper.
-		LAUNCH="echo \$\$ > '$PIDFILE'; exec env LOGDIR='$LOGDIR' CFGDIR='$CFGDIR' SETTINGSFILE='$SETTINGSFILE' python3 '${PLUGIN_DIR}/volume_sync.py'"
+		LAUNCH="echo \$\$ > '$PIDFILE'; exec env LOGDIR='$LOGDIR' CFGDIR='$CFGDIR' python3 '${PLUGIN_DIR}/volume_sync.py'"
 		if [ "$(id -u)" = "0" ] && command -v runuser >/dev/null 2>&1; then
 			nohup runuser -u fpp -- bash -c "$LAUNCH" >>"$PLUGIN_LOG" 2>&1 &
 		else

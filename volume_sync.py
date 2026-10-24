@@ -13,9 +13,10 @@ per-remote offset. Nothing is sent while the plugin is disabled, and nothing
 is sent at all unless this FPP is in player mode: this box's own addresses are
 never targets, and a remote must not push its volume to the rest of the show.
 
-The settings are read straight from FPP's plugin config file and only re-read
-when that file changes, so nothing here goes through PHP. The volume poll
-slows down once the volume has been steady for a while.
+This plugin's own settings are read straight from its config file and only
+re-read when that file changes, so nothing here goes through PHP. Everything
+that belongs to FPP, this box's mode included, comes from FPP's API. The
+volume poll slows down once the volume has been steady for a while.
 """
 import json
 import logging
@@ -39,7 +40,6 @@ PLAYER_MODES = ("player", "master")
 logdir = os.environ.get("LOGDIR", "/home/fpp/media/logs")
 cfgdir = os.environ.get("CFGDIR", "/home/fpp/media/config")
 CONFIG_FILE = os.path.join(cfgdir, f"plugin.{REPO}")
-SETTINGS_FILE = os.environ.get("SETTINGSFILE", "/home/fpp/media/settings")
 
 logging.basicConfig(
     filename=os.path.join(logdir, f"plugin-{REPO}.log"),
@@ -65,11 +65,11 @@ def http_get(path, timeout=2):
         return r.read().decode()
 
 
-def read_settings_file(path):
-    """FPP settings files: 'Key = "value"' (or 'Key=value') per line."""
+def read_config():
+    """This plugin's own settings: 'Key = "value"' (or 'Key=value') per line."""
     result = {}
     try:
-        with open(path, "r") as f:
+        with open(CONFIG_FILE, "r") as f:
             for line in f:
                 key, sep, value = line.partition("=")
                 if not sep:
@@ -78,7 +78,7 @@ def read_settings_file(path):
     except FileNotFoundError:
         pass
     except OSError as e:
-        log.debug("reading %s: %s", path, e)
+        log.debug("reading %s: %s", CONFIG_FILE, e)
     return result
 
 
@@ -112,19 +112,19 @@ def fetch_systems():
 
 
 def local_info(systems):
-    """(this FPP's mode, its own addresses). The mode comes from FPP's own
-    settings file; the MultiSync list is the fallback and gives the addresses."""
+    """(this FPP's mode, its own addresses), from the entries the MultiSync
+    list marks as local. With no local entry the mode is unknown, and an
+    unknown mode sends nothing."""
     addrs = set()
-    entry_mode = ""
+    mode = ""
     for s in systems:
         if s.get("local"):
             addr = s.get("address", "")
             if addr:
                 addrs.add(addr)
-            if not entry_mode:
-                entry_mode = (s.get("fppModeString") or "").strip().lower()
-    mode = read_settings_file(SETTINGS_FILE).get("fppMode", "").strip().lower()
-    return (mode or entry_mode), addrs
+            if not mode:
+                mode = (s.get("fppModeString") or "").strip().lower()
+    return mode, addrs
 
 
 def remote_addresses(systems):
@@ -179,7 +179,7 @@ def main():
                 stamp = config_stamp()
                 if stamp != cfg_stamp:
                     cfg_stamp = stamp
-                    cfg = read_settings_file(CONFIG_FILE)
+                    cfg = read_config()
                     was_enabled = enabled
                     enabled = cfg.get("Enabled", "0") == "1"
                     if enabled != was_enabled:

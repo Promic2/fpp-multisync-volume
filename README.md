@@ -58,10 +58,12 @@ within about 2 seconds, newly discovered remotes within 30.
 A small Python daemon (started with fppd by `postStart.sh`, stopped with it by
 `preStop.sh`) reads the master's volume through FPP's HTTP API and, when it
 changes, triggers FPP's own `Volume Set` command with MultiSync addressed to
-each remote. It only uses FPP's documented HTTP and command APIs.
+each remote. It only uses FPP's documented HTTP and command APIs: this box's
+own mode comes from the entry the MultiSync system list marks as local, and an
+unknown mode sends nothing.
 
-To keep the cost on the master low it does no work it does not need to: the
-settings come straight from FPP's plugin config file and are only re-parsed
+To keep the cost on the master low it does no work it does not need to: its
+own settings come straight from its plugin config file and are only re-parsed
 when that file's timestamp changes (no PHP requests at all), the MultiSync
 system list is read every 30 seconds, and the volume poll backs off from four
 times a second to once a second when the volume has been steady for 15
