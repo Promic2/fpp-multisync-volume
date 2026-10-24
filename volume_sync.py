@@ -211,10 +211,13 @@ def main():
                                     "player (the master), so nothing is sent",
                                     mode or "unknown")
                     sent.clear()
-                ips = selected if target_mode == "selected" else remote_addresses(systems)
-                # Never target this box: a Volume Set addressed to our own
-                # address is applied locally and would move the master's volume.
-                new_targets = {ip: offsets.get(ip, 0) for ip in ips if ip not in local_addrs}
+                if mode_ok:
+                    ips = selected if target_mode == "selected" else remote_addresses(systems)
+                    # Never target this box: a Volume Set addressed to our own
+                    # address is applied locally and would move the master's volume.
+                    new_targets = {ip: offsets.get(ip, 0) for ip in ips if ip not in local_addrs}
+                else:
+                    new_targets = {}
                 refresh_targets = False
                 if new_targets != targets:
                     log.info("targets: %s", ", ".join(f"{ip} ({off:+d})" for ip, off in new_targets.items()) or "none")
