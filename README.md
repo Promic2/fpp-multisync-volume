@@ -80,7 +80,7 @@ and only while enabled. No internet access, no data collected.
 Requires FPP 10.0 or newer, and a master with more than one CPU core
 (`minCpuCores: 2`), so the polling never competes with the show on a
 single-core board such as a BeagleBone Black or a Pi Zero. The remotes can be
-any board — nothing is installed on them.
+any board; nothing is installed on them.
 
 Tested on FPP 10.2 (master in a Debian VM, remote on a Raspberry Pi 4).
 
