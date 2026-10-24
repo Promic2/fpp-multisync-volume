@@ -199,7 +199,6 @@ def main():
 
             if enabled and (refresh_targets or now - last_systems >= SYSTEMS_REFRESH_S):
                 last_systems = now
-                refresh_targets = False
                 systems = fetch_systems()
                 mode, local_addrs = local_info(systems)
                 mode_ok = mode in PLAYER_MODES
@@ -216,6 +215,7 @@ def main():
                 # Never target this box: a Volume Set addressed to our own
                 # address is applied locally and would move the master's volume.
                 new_targets = {ip: offsets.get(ip, 0) for ip in ips if ip not in local_addrs}
+                refresh_targets = False
                 if new_targets != targets:
                     log.info("targets: %s", ", ".join(f"{ip} ({off:+d})" for ip, off in new_targets.items()) or "none")
                     targets = new_targets
@@ -240,6 +240,9 @@ def main():
         except Exception as e:  # fppd restarting, remote list not ready, ...
             log.debug("waiting: %s", e)
             sent.clear()
+            # Retry the system list shortly instead of waiting out the refresh
+            # interval: right after an fppd restart the first call often fails.
+            refresh_targets = True
             sleep_s = IDLE_S
         time.sleep(sleep_s)
 
