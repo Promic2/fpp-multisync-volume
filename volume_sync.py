@@ -218,7 +218,10 @@ def main():
                     new_targets = {ip: offsets.get(ip, 0) for ip in ips if ip not in local_addrs}
                 else:
                     new_targets = {}
-                refresh_targets = False
+                # An empty mode means the list had no local entry yet, which
+                # happens for a moment after fppd starts: look again shortly
+                # instead of waiting out the refresh interval.
+                refresh_targets = not mode
                 if new_targets != targets:
                     log.info("targets: %s", ", ".join(f"{ip} ({off:+d})" for ip, off in new_targets.items()) or "none")
                     targets = new_targets
