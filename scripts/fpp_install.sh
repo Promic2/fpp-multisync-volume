@@ -1,12 +1,17 @@
 #!/bin/bash
 set -e
 # fpp-multisync-volume install script. Safe to run more than once.
-# Starts the daemon right away so no fppd restart is needed; it stays idle
-# until "Enable" is switched on in Content Setup -> MultiSync Volume.
+# This only stops a copy left running by an earlier version; the daemon is
+# started by postStart.sh when fppd starts and stopped by preStop.sh when it
+# stops, so the plugin starts working after the fppd restart FPP asks for
+# below. It then stays idle until "Enable" is switched on in
+# Content Setup -> MultiSync Volume.
 : "${FPPDIR:=/opt/fpp}"
 . "${FPPDIR}/scripts/common"
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
 chmod +x "$DIR"/*.sh 2>/dev/null
 "$DIR/daemon.sh" stop
-"$DIR/daemon.sh" start
+
+# Ask FPP to show its "restart fppd" banner: postStart.sh starts the daemon.
+setSetting restartFlag 1
